@@ -54,10 +54,10 @@ export async function generateMetadata({params}) {
             JOIN users ON posts.user_id = users.id
         WHERE posts.id = $1`,
         [postId])
+
     if (res.rowCount === 0) {
         return defaultMetadata;
     }
-    console.log(res.rows)
 
     return {
         ...defaultMetadata,
