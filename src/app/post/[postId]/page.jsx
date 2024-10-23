@@ -49,17 +49,23 @@ const defaultMetadata = {
 export async function generateMetadata({params}) {
     const postId = params.postId;
     const res = await db.query(
-        `SELECT posts.title 
-            FROM posts
-        WHERE post.id = $1`,
+        `SELECT posts.id, posts.title, posts.body, users.name
+        FROM posts
+            JOIN users ON posts.user_id = users.id
+        WHERE posts.id = $1`,
         [postId])
     if (res.rowCount === 0) {
         return defaultMetadata;
     }
+    console.log(res.rows)
 
     return {
         ...defaultMetadata,
         title: res.rows[0].title + " | Didit",
+        openGraph: {
+            title: res.rows[0].title + " | Didit",
+            description: res.rows[0].description + " | Didit",
+        }
     };
 
 }
