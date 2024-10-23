@@ -25,6 +25,8 @@ export default async function SinglePostPage({params}) {
      JOIN users on votes.user_id = users.id`
     );
 
+    const markup = {__html: `<div>${post.body}</div>`};
+
     return (
         <div className="max-w-screen-lg mx-auto pt-4 pr-4">
             <div className="flex space-x-6">
@@ -34,7 +36,7 @@ export default async function SinglePostPage({params}) {
                     <p className="text-zinc-400 mb-4">Posted by {post.name}</p>
                 </div>
             </div>
-            <main className="whitespace-pre-wrap m-4">{post.body}</main>
+            <main className="whitespace-pre-wrap m-4" dangerouslySetInnerHTML={markup}></main>
 
             <CommentForm postId={post.id}/>
             <CommentList postId={post.id}/>
@@ -57,7 +59,7 @@ export async function generateMetadata({params}) {
         [postId])
 
     if (res.rowCount === 0) {
-        notFound();
+        notFound()
         return defaultMetadata;
     }
 
