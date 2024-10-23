@@ -2,6 +2,7 @@ import {CommentForm} from "@/components/CommentForm";
 import {CommentList} from "@/components/CommentList";
 import {Vote} from "@/components/Vote";
 import {db} from "@/db";
+import {notFound} from "next/navigation";
 
 export default async function SinglePostPage({params}) {
     const postId = params.postId;
@@ -56,6 +57,7 @@ export async function generateMetadata({params}) {
         [postId])
 
     if (res.rowCount === 0) {
+        notFound();
         return defaultMetadata;
     }
 
